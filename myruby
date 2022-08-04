@@ -225,4 +225,73 @@ mapはブロック内で開始した値を集めて新しい配列を返す
 => 1
 [9] pry(main)> bar
 => nil
+-----------------------------------------------------
+Hashオブジェクト
+キーとバリューの組み合わせで表現できるオブジェクト
+
+任意の数のキーとバリューををもたせることができる
+[11] pry(main)> user1 = {name: '一郎'}
+=> {:name=>"一郎"}
+[12] pry(main)> user2 = {id: 2, name: '二郎'}
+=> {:id=>2, :name=>"二郎"}
+
+キー名にコロンをつけた形でデータを定義した場合はキーの部分がsymbolになる
+[13] pry(main)> user1[:name]
+=> "一郎"
+[14] pry(main)> user2[:id]
+=> 2
+[15] pry(main)> user2[:name]
+=> "二郎"
+
+この書き方ではキーをstringで指定しても値を参照できない
+[16] pry(main)> user1['name']
+=> nil
+明示的にキーをstringで表す必要がある場合には次のように書く
+[17] pry(main)> user3 = { 'id' =>3, 'name' =>'三郎' }
+=> {"id"=>3, "name"=>"三郎"}
+[18] pry(main)> user3['id']
+=> 3
+[19] pry(main)> user3['name']
+=> "三郎"
+
+バリューの部分には任意のオブジェクトを入れることができるのでhashで階層構造を作ることができる
+[3] pry(main)> user4 = {
+[3] pry(main)*   name: '四郎',
+[3] pry(main)*   test_result: {
+[3] pry(main)*     math: 70,
+[3] pry(main)*     science: 80
+[3] pry(main)*   }
+[3] pry(main)* }
+=> {:name=>"四郎", :test_result=>{:math=>70, :science=>80}}
+[4] pry(main)> user4[:test_result][:math]
+=> 70
+
+特定のキーの位置に値を代入することで値を書き換えることができる
+[5] pry(main)> user4[:test_result][:math] = 90
+=> 90
+[6] pry(main)> user4
+=> {:name=>"四郎", :test_result=>{:math=>90, :science=>80}}
+
+keysメソッド・valuesメソッド
+Hashオブジェクトではkeysメソッドでキーの配列、valueメソッドで値の配列を取得することができる
+=> [:name, :test_result]
+[8] pry(main)> user4.values
+=> ["四郎", {:math=>90, :science=>80}]
+
+Hashオブジェクトでもeachメソッドを呼び出すことができ、Hashのeachメソッドではブロックに2つの値が渡される。1つ目がキーの値で2つ目がバリューの値
+[9] pry(main)> user4.each do |k, v|
+[9] pry(main)*   puts "#{k} = #{v}"
+[9] pry(main)* end
+name = 四郎
+test_result = {:math=>90, :science=>80}
+=> {:name=>"四郎", :test_result=>{:math=>90, :science=>80}}
+
+一部のキーバリューを削除するにはdeleteメソッドで第一引数に削除対象のキーを指定する
+[10] pry(main)> user4.delete(:test_result)
+=> {:math=>90, :science=>80}
+[11] pry(main)> user4
+=> {:name=>"四郎"}
+
+
+
 
