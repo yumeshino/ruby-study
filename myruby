@@ -456,4 +456,102 @@ puts '複数行にまたがってコメントアウトしたい場合'
 
 =end
 ----------------------------------------------------------------------------
-                
+if文
+式の評価の結果が真である場合に特定の処理を実行するもの
+country = 'ja'
+
+if country == 'ja'
+  puts '日本'
+end
+countryという変数の中身がjaであったら日本と表示するプログラム
+if文はifの後に評価対象の式を書き、その下に評価結果が真だった場合に実行する処理を書く。最後にif文を閉じるendを記載する
+
+多言語同様、複数の条件を並べることもできる
+country = 'us'
+
+if country == 'ja'
+  puts '日本'
+elseif country == 'us'
+  puts 'アメリカ'
+else
+  puts 'その他の国'
+end
+          
+rubyではnilとfalseが偽として評価され、それ以外のものは全て真として評価され
+下記の式だと三つ目が真として評価される
+if nil
+  puts 'nilは真'
+end
+if false
+  puts 'falseは真'
+end
+if 0
+  puts '0は真'
+end
+
+
+
+unless文
+ifとはが逆に偽である場合に処理を実行する
+下記の式だとひとつ目とふたつ目が真として評価される
+unless nil
+  puts 'nilは偽'
+end
+unless false
+  puts 'falseは偽'
+end
+unless 0
+  puts '0は偽'
+end
+
+
+後置if、後置unless
+一行で条件分岐と処理を書く場合に利用される
+実行したい文の後ろにifと条件を書くことで条件の結果が真の時に手前の処理が実行される
+[44] pry(main)> country = 'ja'
+=> "ja"
+[45] pry(main)> '日本' if country == 'ja'
+=> "日本"
+[46] pry(main)> '日本' if country == 'j'
+=> nil
+
+unlesssの場合も同様
+[1] pry(main)> country = 'us'
+=> "us"
+[2] pry(main)> 'その他の国' unless country == 'jp'
+=> "その他の国"
+
+
+三項演算子
+はてなの手前の式の結果が真だった場合にコロンの前の値を返し、偽であった場合にコロンの後ろの値を返す
+結果の真偽によって該当した文字列がplaceに変数代入されている
+[3] pry(main)> place = country == 'ja' ? '日本' : '海外'
+=> "海外"
+[4] pry(main)> country = 'ja'
+=> "ja"
+[5] pry(main)> place = country == 'ja' ? '日本' : '海外'
+=> "日本"
+[6] pry(main)> place
+=> "日本"
+[7] pry(main)> place = country == '' ? '日本' : '海外'
+=> "海外"
+[8] pry(main)> place
+=> "海外"
+
+
+戻り値
+rubyではif文の処理の最後の式の評価結果が戻り値として返される
+複数行の処理であった場合は最後の式の結果が開始される
+下記の条件分岐では’ふつう'が結果として返される
+score = 60
+
+result = if score >= 80
+            '優秀'
+        elseif score >= 50
+            '普通'
+            'ふつう'
+        else
+            'やや劣る'
+        end
+puts result
+
