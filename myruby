@@ -554,4 +554,65 @@ result = if score >= 80
             'やや劣る'
         end
 puts result
+----------------------------------------------------------------------------
+擬似変数
+true、false、nilのこと等を指す
+true、falseは主に条件分岐の判断や何かの設定のON、OFFを表すようなフラグに使用される
+nilは何もないことを表すオブジェクトでrailsにおいてはDBに問い合わせた結果、該当するデータがない場合にnilが入るケースがある
+変数の初期化に置いて初期値をnilとして設定することもある
+
+論理演算子
+
+&&演算子
+条件式をand 2つで繋げることでif文で全てがtrueだった場合にtrueと評価される
+[9] pry(main)> true if true && true
+=> true
+
+いずれかがfalseやnilとなった場合はnilが返る
+andで繋げた条件式は左から評価され、falseやnilがあった時点で以降の評価は行わない為、1つめの式は後のtrueは実際には評価されていない
+[10] pry(main)> true if false && true
+=> nil
+[11] pry(main)> true if true && nil
+=> nil
+
+or演算子
+条件式をorで繋げた場合、いずれかtrueの場合にtrueと判定するもの
+trueと判定された時点で以降の式を評価しない
+なので2つめの式は実際にはfalseは評価されていない
+[12] pry(main)> true if false || true
+=> true
+[13] pry(main)> true if true || false
+=> true
+
+変数をorで繋げた場合にtrueと判定された変数の値が返るため、左から評価していって
+nilでもfalseでもなかった値を別の変数に入れることができる
+[14] pry(main)> val1 = nil
+=> nil
+[15] pry(main)> val2 = 100
+=> 100
+[16] pry(main)> val3 = val1 || val2
+=> 100
+
+上の特性を利用して、代入先の変数がnilかfalseである場合には ||= の右側にある値を変数にセットできる。
+[18] pry(main)> var = nil
+=> nil
+[19] pry(main)> var ||= 'value'
+=> "value"
+[20] pry(main)> var
+=> "value"
+
+既に値がはいっている場合には代入されない
+[23] pry(main)> var = 'sone value'
+=> "sone value"
+[24] pry(main)> var ||= 'new value'
+=> "sone value"
+[25] pry(main)> var
+=> "sone value"
+
+not演算子
+変数の頭に！をつけることでtrue、falseの評価を反転させる
+[26] pry(main)> !true ? '真' : '偽'
+=> "偽"
+[27] pry(main)> !false ? '真' : '偽'
+=> "真"
 
