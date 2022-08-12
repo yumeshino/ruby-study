@@ -770,3 +770,4 @@ def some_method(**kv_values)
 end
 
 some_method(param1: aaa, param2: bbb) //表示結果 {:param1=>:aaa,:param2=>:bbb}
+
