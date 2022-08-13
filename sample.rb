@@ -63,6 +63,26 @@ yield_test { puts 'ブロックを渡しました' }
 
 yield_test
 
+class Book
+  def initialize
+    ptus 'Initialize!!'
+  end
+end
+
+Book.new
+
+class Book
+  attr_accessor :name
+  def initialize(name = '不明')
+    @name = name
+  end
+end
+
+book = Book.new
+puts book.name
+book.name = 'はじめてのRuby'
+puts book.name
+
 
 
 

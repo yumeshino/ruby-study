@@ -852,3 +852,97 @@ end
 yield_test { puts 'ブロックを渡しました' }
 
 yield_test
+----------------------------------------------------------------------
+クラス
+オブジェクトを作るためのひな型でデータやメソッドを持つもの
+そのほかにオブジェクトを作成せずに直にクラスに定義されたメソッドを呼び出す方法もある
+
+キャメルケース
+各単語や要素語の先頭を大文字にする記法
+
+クラス定義
+クラスを定義する時はクラスと書いた後にキャメルケースでクラス名を書き最後にendで閉じる
+[1] pry(main)> class User
+[1] pry(main)* end
+=> nil
+[2] pry(main)> User.new
+=> #<User:0x00007fa610947768>
+
+イニシャライズメソッド
+オブジェクトが生成される際に自動で呼び出される
+クラス内に定義したイニシャライズというメソッドは特別な意味を持ちオブジェクトが生成されるタイミングで自動的に呼ばれる
+class Book
+  def initialize
+    ptus 'Initialize!!'
+  end
+end
+
+Book.new
+
+
+インスタンス変数
+生成されたオブジェクトごとに持つ変数でオブジェクト内のメソッドから参照したり書き換えたりすることができる
+
+rubyでは＠を先頭につけた変数名は特別な意味を持ちインスタンス変数として扱われる
+bookオブジェクトからインスタンス変数にアクセスするにはインスタンス変数にアクセスするためのメソッドを用意しなければならない
+class Book
+  def initialize(name = '不明')
+    @name = name //インスタンス変数
+  end
+
+//@nameを取得するためだけのメソッド@nameの中身を書き換えることはできない
+//@nameの中身を書き換えるには書き換え用のメソッドを定義する必要がある
+//name＝のメソッドを作成することで外の仮引数で代入する値を受け取りインスタンス変数に値をセットするメソッドを定義する
+  def name 
+    @nema 
+  end
+
+  def name=(new_name)
+    @name = new_name
+  end
+end
+
+book = Book.new
+puts book.name
+book.name = 'はじめてのRuby’
+puts book.name
+
+
+
+アクセサメソッド
+これをインスタンス変数ごとに作成したら大量のメソッドが必要になってしまうので
+rubyではアクセサメソッドという自動でインスタンス変数とインスタンス変数にアクセスするメソッドを用意してくれる機能がある。アクセサメソッドを使うとこれまでに書いたコードを簡潔に書くことができる
+class Book
+  attr_accessor :name
+  def initialize(name = '不明')
+    @name = name
+  end
+end
+
+book = Book.new
+puts book.name
+book.name = 'はじめてのRuby'
+puts book.name
+
+initializeメソッドで値を初期化しないばいいはデフォルトでnilで初期化される
+attr_accessorは指定したsymbol名のインスタンスの値を取得するメソッドと値を更新するメソッドを作る
+class Book
+  attr_accessor :name
+end
+
+book = Book.new
+puts book.name
+book.name = 'はじめてのRuby'
+puts book.name
+
+アクセサにはカンマ区切りで複数の属性を定義することができる
+class Book
+  attr_accessor :name,:pages   / /読み書き可能なメソッドを作成するアクセサ
+  attr_reader :price  //読み取り可能なメソッドを作成するアクセサ
+  attr_writer :sold   //書き込み可能なメソッドを作成するアクセサ
+end
+
+book = Book.new
+puts book.name
+book.name = 'はじめてのRuby'
+puts book.name
