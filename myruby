@@ -62,7 +62,7 @@ stringオブジェクトの解説
 
 レシーバ
 レシーバーは特に Ruby の用語というわけではなく、オブジェクト指向一般に使われる用語です。
-意味は「 . の左側」で間違いありません。
+意味は「 . の左側」
 例えば以下の例では car が run メソッドのレシーバーとなります。
 car.run
 
@@ -770,4 +770,85 @@ def some_method(**kv_values)
 end
 
 some_method(param1: aaa, param2: bbb) //表示結果 {:param1=>:aaa,:param2=>:bbb}
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+Procオブジェクトとyield
 
+Procオブジェクト
+do-endや中かっこで作成したブロックをオブジェクト化したもの
+[4] pry(main)> proc = Proc.new { puts 'hoge' }
+=> #<Proc:0x00007fe447075660@(pry):4>
+[5] pry(main)> proc.class 
+=> Proc
+[6] pry(main)> proc.call
+hoge
+=> nil
+procオブジェクトを作成する際に渡したブロックはcallメソッドで実行することができる
+
+
+procではブロックの外側にある変数を参照することができる
+[13] pry(main)> hoge = :hoge
+=> :hoge
+[14] pry(main)> proc = Proc.new { puts hoge }
+=> #<Proc:0x00007fe44626ac28@(pry):13>
+[15] pry(main)> proc.call
+hoge
+=> nil
+[16] pry(main)> hoge = :fuga
+=> :fuga    
+[17] pry(main)> proc.call
+fuga
+=> nil
+変数の値が変わった場合はブロック内で参照しているオブジェクトも同じものであるため変更後の値が表示される
+
+
+未定義の変数をブロックで使用した場合
+procの生成時はエラーにならないが呼び出した時点で変数が未定義の為エラーになる
+[1] pry(main)> proc = Proc.new { puts hoge }
+=> #<Proc:0x00007f86ad828e18@(pry):1>
+[2] pry(main)> proc.call
+NameError: undefined local variable or method `hoge' for main:Object
+from (pry):1:in `block in __pry__'
+
+後から値を入れて改めて呼び出してもエラーになるため、procでブロック外の値を参照するにはprocオブジェクトを作成する前の時点で変数が定義されていなければならない
+[5] pry(main)> hoge = :hoge
+=> :hoge
+[6] pry(main)> proc.call
+NameError: undefined local variable or method `hoge' for main:Object
+from (pry):1:in `block in __pry__'
+
+
+yield
+メソッド呼び出しで渡されたブロックをメソッドの中で実行する際に使用するもの
+def yield_test      //yield_testというメソッドを定義
+  yield(1,2)        //メソッド処理の中でyieldを呼んでいる
+end
+
+puts yield_test { |a,b| a + b }      //yield_testの後にブロックを渡しているこのブロックのパラメータにはaとbという変数が定義されておりa＋bの結果を返す処理が書いてある
+yieldメソッドを呼び出した場合はメソッド呼び出しの際に引数に渡されたブロックを呼び出すことを意味する
+結果、yieldメソッドに渡した引数はブロックパラメータとして渡されaに1、bに2が入り足し算が実行されyieldメソッドの呼び出し元に足し算の結果の3が返ることになる
+
+特定の処理をブロックという形でメソッドに渡し、メソッド内の任意のタイミングでそのブロックを実行できる
+
+
+メソッドの仮引数の最後に＆をつけた仮引数を定義することでメソッド呼び出しの時に渡されたブロックをprocオブジェクトで受け取ることができる
+先ほどのyieldを使った記法はこのprocオブジェクトを受け取ることを省略した記法になる
+def yield_test(&proc)
+  proc.call(1,2)
+end
+
+puts yield_test { |a,b| a + b }
+
+
+メソッド内でblock＿givenメソッドを呼び出すことでにメソッドにブロックが渡されたかを判定することができる
+block＿givenメソッドの戻り値がtrueであればブロックが渡されと判断し、falseであれば渡されなかったと判断することができる
+def yield_test
+  if block_given?
+    yield
+  else
+    puts 'ブロックが渡されませんでした'
+  end
+end
+
+yield_test { puts 'ブロックを渡しました' }
+
+yield_test

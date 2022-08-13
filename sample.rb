@@ -44,5 +44,25 @@ symbol = case value
 
 puts symbol
 
+def yield_test(&proc)
+  proc.call(1,2)
+end
+
+puts yield_test { |a,b| a + b }
+
+
+def yield_test
+  if block_given?
+    yield
+  else
+    puts 'ブロックが渡されませんでした'
+  end
+end
+
+yield_test { puts 'ブロックを渡しました' }
+
+yield_test
+
+
 
 
