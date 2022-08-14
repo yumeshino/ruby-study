@@ -130,4 +130,27 @@ puts user.display_birthday
 puts user.inner_call_display_birthday
 
 
+class Greeting
+  def hell
+    puts "こんにちは！#{@name}さん"
+  end
+
+  class User < Greeting
+    def initialize(name)
+      @name = name
+    end
+
+    def hello
+      puts "Hello,#{@namae}!"
+    end
+    
+  end
+
+  user1 = User.new('Sato')
+  user1.hello
+
+  user2 = User.new('Tanaka')
+  user.hello
+
+
 

@@ -1053,4 +1053,89 @@ protectedメソッドもドット記法で外部から呼び出すことがで�
 => "STRING"
 [10] pry(main)> str
 => "STRING"                //オブジェクトの値自体も大文字になる
+---------------------------------------------------------------------------------
+クラスの継承
+クラスは別のクラスを継承して新しクラスを作ることができる
+クラスを継承することによって新しいクラスでも継承元の機能が利用できるようになり、新たに必要な機能だけを追加実装すればok
+よく使用される場面としては異なるクラスで共通する機能が必要な場合に継承元のクラスに共通の機能を定義しておき複数のクラスで継承するといった方法をとる
+下のコードはGreetingクラスを継承したUserクラスを作成している
+別のクラスを継承するクラスを定義するには、クラス名の横に＜を書き継承するクラス名を記載する
+class Greeting
+  def hell
+    puts "こんにちは！#{@name}さん"
+  end
 
+  class User < Greeting
+    def initialize(name)
+      @name = name
+    end
+  end
+
+  user1 = User.new('Sato')
+  user1.hello
+
+  user2 = User.new('Tanaka')
+  user.hello
+//表示結果
+//こんにちは！Satoさん
+//こんにちは！Tanakaさん
+
+
+クラスでは継承したメソッドと同じ名前のメソッドを定義することでメソッドを上書きすることができる。この上書きのことをオーバーライドという
+rubyでは仮引数が同じであるかは関係なくメソッド名が同じであればオーバーライドされる
+下のコードではhelloメソッドがオーバーライドされ英語のメッセージを表示するhelloメソッドが実行される
+class Greeting
+  def hell
+    puts "こんにちは！#{@name}さん"
+  end
+
+  class User < Greeting
+    def initialize(name)
+      @name = name
+    end
+
+    def hello
+      puts "Hello,#{@namae}!"
+    end
+    
+  end
+
+  user1 = User.new('Sato')
+  user1.hello
+
+  user2 = User.new('Tanaka')
+  user.hello
+//表示結果
+//Hello,sato!
+//Hello,Tanaka!
+
+
+オーバーライドしたメソッドで親クラスのメソッドを呼び出すこともできる
+親クラスのメソッドを呼び出すにはsuperと記載する
+class Greeting
+  def hell
+    puts "こんにちは！#{@name}さん"
+  end
+
+  class User < Greeting
+    def initialize(name)
+      @name = name
+    end
+
+    def hello
+      super
+      puts "Hello,#{@namae}!"
+    end
+    
+  end
+
+  user1 = User.new('Sato')
+  user1.hello
+
+  user2 = User.new('Tanaka')
+  user.hello
+//表示結果
+//こんにちは！Satoさん
+//Hello,Sato!
+//こんにちは！Tanakaさん
+//Hello,Tanaka!
