@@ -1139,3 +1139,70 @@ class Greeting
 //Hello,Sato!
 //こんにちは！Tanakaさん
 //Hello,Tanaka!
+---------------------------------------------------------------------------------
+モジュール
+メソッドや定数を定義できるもの
+moduleと書いた後に任意のmodule名を書き、endで閉じるまでがmoduleの定義
+module内に書いたメソッドや定数は色々な箇所で使うことができる
+下のコードではinclude module名とすることでmoduleに定義されたメソッドを関数のように呼び出している
+定数にアクセスする方法はいくつかあり、module名にコロンを２つ繋げた後に定数名をつける方法とメソッド内で参照する方法がある
+moduleをincludeしたあとであればmodule名を省略して定数に直接アクセスできるようになる
+  module SampleModule
+    CONST_NUM = 100
+
+    def const_num
+      CONST_NUM  //メソッド内で参照する方法
+    end
+  end
+  //表示結果
+  //100
+  //100
+  //100
+
+
+  puts SampleModule::CONST_NUM  //module名にコロンを２つ繋げた後に定数名をつける
+  include SampleModule
+  puts const_num
+  puts CONST_NUM  //module名を省略して定数に直接アクセス可
+
+
+moduleファンクション
+moduleファンクションとして定義することでクラスのメソッドのようにmoduleのメソッドを直接呼び出すことができる
+module名にドットをつけてメソッド名を呼び出すことができる
+  module SampleModule
+    def module_function_sum(a,b)
+      a + b
+    end
+
+    module_function :module_function_sum 
+  end
+
+  puts SampleModule.module_function_sum(3,3)
+  //表示結果
+  //6
+
+ミックスイン
+moduleの機能をクラスに取り込む機能
+クラスにmoduleの機能を取り込むにはクラス内にinclude、module名を書く
+これによってインスタンス化されたオブジェクトでmoduleに定義されたメソッドを呼び出すことができるようになる
+使い道としては複数のクラスで使う共通のメソッドをmoduleとして定義しておき、適宜includeして使ったり、特定のメソッドをmoduleにまとめておきユーティリティとして使用する
+  module SampleModule
+    def sum(a,b)
+      a + b
+    end
+  end
+
+  class Sample
+    include SampleModule
+
+    def call_sum(a,b)
+      sum(a,b)
+    end
+  end
+
+  sample = Sample.new
+  puts sample.sum(1,1)
+  puts sample.call_sum(2,2)
+  //表示結果
+  //2
+  //4

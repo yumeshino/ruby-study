@@ -143,7 +143,7 @@ class Greeting
     def hello
       puts "Hello,#{@namae}!"
     end
-    
+
   end
 
   user1 = User.new('Sato')
@@ -151,6 +151,51 @@ class Greeting
 
   user2 = User.new('Tanaka')
   user.hello
+
+  module SampleModule
+    CONST_NUM = 100
+
+    def const_num
+      CONST_NUM
+    end
+  end
+
+  puts SampleModule::CONST_NUM
+  include SampleModule
+  puts const_num
+  puts CONST_NUM
+
+ 
+  module SampleModule
+    def module_function_sum(a,b)
+      a + b
+    end
+
+    module_function :module_function_sum
+  end
+
+  puts SampleModule.module_function_sum(3,3)
+
+  module SampleModule
+    def sum(a,b)
+      a + b
+    end
+  end
+
+  class Sample
+    include SampleModule
+
+    def call_sum(a,b)
+      sum(a,b)
+    end
+  end
+
+  sample = Sample.new
+  puts sample.sum(1,1)
+  puts sample.call_sum(2,2)
+ 
+
+
 
 
 
