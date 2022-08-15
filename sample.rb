@@ -193,6 +193,51 @@ class Greeting
   sample = Sample.new
   puts sample.sum(1,1)
   puts sample.call_sum(2,2)
+
+  begin
+    val = 10 / 0
+    puts val
+  rescue
+    puts '0で割ることはできません'
+  end
+
+  begin
+    val = 10 / 0
+    puts val
+  rescue => e
+    p e.backtrace
+  end
+
+  begin
+    hoge
+    10 / 0
+  rescue ZeroDivisionError => e
+    puts '0で割ってはいけません'
+  rescue => 
+    puts 'その他のエラー'
+  end
+
+  puts '終了'
+
+  num = 0
+
+  begin
+    p 10 / num
+  rescue ZeroDivisionError => e
+    p e
+    num = 2
+    retry
+  end
+
+  puts '終了'
+
+  begin
+    raise
+  rescue => e
+    p e
+  end
+
+  
  
 
 
