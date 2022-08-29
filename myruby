@@ -1347,8 +1347,11 @@ protectedメソッドもドット記法で外部から呼び出すことがで�
 クラスは別のクラスを継承して新しクラスを作ることができる
 クラスを継承することによって新しいクラスでも継承元の機能が利用できるようになり、新たに必要な機能だけを追加実装すればok
 よく使用される場面としては異なるクラスで共通する機能が必要な場合に継承元のクラスに共通の機能を定義しておき複数のクラスで継承するといった方法をとる
+
+継承例
 下のコードはGreetingクラスを継承したUserクラスを作成している
 別のクラスを継承するクラスを定義するには、クラス名の横に＜を書き継承するクラス名を記載する
+Greetingクラスに定義されたメソッドは継承先のUserオブジェクトでも使用可能なため、helloメソッドを呼び出せるようになる
 class Greeting
   def hell
     puts "こんにちは！#{@name}さん"
@@ -1361,15 +1364,16 @@ class Greeting
   end
 
   user1 = User.new('Sato')
-  user1.hello
+  user1.hello //継承によりGreetingクラスのメソッドが呼び出せるようになる
 
   user2 = User.new('Tanaka')
-  user.hello
+  user.hello //継承によりGreetingクラスのメソッドが呼び出せるようになる
 //表示結果
 //こんにちは！Satoさん
 //こんにちは！Tanakaさん
 
 
+オーバーライド
 クラスでは継承したメソッドと同じ名前のメソッドを定義することでメソッドを上書きすることができる。この上書きのことをオーバーライドという
 rubyでは仮引数が同じであるかは関係なくメソッド名が同じであればオーバーライドされる
 下のコードではhelloメソッドがオーバーライドされ英語のメッセージを表示するhelloメソッドが実行される
@@ -1395,11 +1399,11 @@ class Greeting
   user2 = User.new('Tanaka')
   user.hello
 //表示結果
-//Hello,sato!
+//Hello,sato! //helloメソッドがオーバーライドされ、英語のメッセージを表示するhelloメソッドが実行される
 //Hello,Tanaka!
 
 
-オーバーライドしたメソッドで親クラスのメソッドを呼び出すこともできる
+オーバーライドしたメソッドで親クラスのメソッドを呼び出す
 親クラスのメソッドを呼び出すにはsuperと記載する
 class Greeting
   def hell
@@ -1424,35 +1428,37 @@ class Greeting
   user2 = User.new('Tanaka')
   user.hello
 //表示結果
-//こんにちは！Satoさん
+//こんにちは！Satoさん //superによって親クラスのhelloメソッドも呼び出され、日英の文章が表示される
 //Hello,Sato!
 //こんにちは！Tanakaさん
 //Hello,Tanaka!
 ---------------------------------------------------------------------------------
 モジュール
 メソッドや定数を定義できるもの
+
+モジュールの定義方法
 moduleと書いた後に任意のmodule名を書き、endで閉じるまでがmoduleの定義
 module内に書いたメソッドや定数は色々な箇所で使うことができる
 下のコードではinclude module名とすることでmoduleに定義されたメソッドを関数のように呼び出している
 定数にアクセスする方法はいくつかあり、module名にコロンを２つ繋げた後に定数名をつける方法とメソッド内で参照する方法がある
 moduleをincludeしたあとであればmodule名を省略して定数に直接アクセスできるようになる
-  module SampleModule
-    CONST_NUM = 100
+module SampleModule
+  CONST_NUM = 100
 
-    def const_num
-      CONST_NUM  //メソッド内で参照する方法
-    end
+  def const_num
+    CONST_NUM  //メソッド内で参照する方法
   end
+end
+
+puts SampleModule::CONST_NUM  //module名にコロンを２つ繋げた後に定数名をつける
+include SampleModule //include module名とすることでmoduleに定義されたメソッドを関数のように呼び出している
+puts const_num
+puts CONST_NUM  //includeした後であればmodule名を省略して定数に直接アクセス可
+
   //表示結果
   //100
   //100
   //100
-
-
-  puts SampleModule::CONST_NUM  //module名にコロンを２つ繋げた後に定数名をつける
-  include SampleModule
-  puts const_num
-  puts CONST_NUM  //module名を省略して定数に直接アクセス可
 
 
 moduleファンクション
@@ -1472,9 +1478,11 @@ module名にドットをつけてメソッド名を呼び出すことができ�
 
 ミックスイン
 moduleの機能をクラスに取り込む機能
+
+ミックスインの定義方法
 クラスにmoduleの機能を取り込むにはクラス内にinclude、module名を書く
 これによってインスタンス化されたオブジェクトでmoduleに定義されたメソッドを呼び出すことができるようになる
-使い道としては複数のクラスで使う共通のメソッドをmoduleとして定義しておき、適宜includeして使ったり、特定のメソッドをmoduleにまとめておきユーティリティとして使用する
+
   module SampleModule
     def sum(a,b)
       a + b
@@ -1495,6 +1503,8 @@ moduleの機能をクラスに取り込む機能
   //表示結果
   //2
   //4
+
+  使い道としては複数のクラスで使う共通のメソッドをmoduleとして定義しておき、適宜includeして使ったり、特定のメソッドをmoduleにまとめておきユーティリティとして使用する。コードをきれいにまとめる方法の一つ
   ---------------------------------------------------------------------------
   例外処理
 
