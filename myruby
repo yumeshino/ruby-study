@@ -1241,9 +1241,53 @@ third
 クラス変数はそのクラスのインスタンス全てで共有される変数のこと
 インスタンスメソッドからでもクラスメソッドからでもアクセスすることができ、異なるオブジェクトでも同じクラスであれば値が共有される
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-インスタンスメソッド
+インスタンスメソッドの定義
 下のUserクラスの中にdisplay_birthdayメソッドが定義されているようにクラス内に定義されたメソッドをインスタンスメソッドという
 オブジェクトから呼び出したり同じクラスないの別のメソッドから呼び出すことができる
+require 'date'
+
+class User
+  attr_accessor :name, :birthday
+
+  def initialize(name,birthday)
+    @name = name
+    @birthday = birthday
+  end
+
+  def display_birthday
+    @birthday（インスタンス変数）.strtime('%Y年 %m月 %d日')
+  end
+
+  def innner_call_displya_birthday
+    self.display_birthday
+    display_birthday
+  end
+end
+
+birthday = Date.new(2000,1,1)
+user = User.new('sato',birthday)
+puts user.display_birthday
+puts user.inner_call_display_birthday
+// 表示結果
+// 2000年01月01日
+// 2000年01月01日
+インスタンスメソッドではオブジェクトで持っているインスタンス変数にアクセスすることができる
+
+
+
+
+クラスに定義するメソッドにはアクセス修飾子が3種類存在する
+
+Publicメソッド
+単純にクラス内に定義したメソッドはデフォルトでpublicメソッドになる
+Publicメソッドはオブジェクトから直にメソッドを呼び出すことができるメソッド
+
+
+Privateメソッド
+privateメソッドを定義するにはクラス内にprivateと書きその一行下にメソッドを定義する
+privateメソッドはオブジェクトからドット記法で直接呼び出すことはできない
+クラス外部には公開されないメソッドでクラス内のメソッドから呼び出して使われるもの
+selfを使用してメソッドを呼び出すことはできず、メソッド名単体で書いて呼び出さなければならない。selfをつけないメソッドの呼び出し方を関数形式という
 require 'date'
 
 class User
@@ -1274,22 +1318,7 @@ birthday = Date.new(2000,1,1)
 user = User.new('sato',birthday)
 puts user.display_birthday
 puts user.inner_call_display_birthday
-// 表示結果
-// 2000年01月01日
-// 2000年01月01日
-インスタンスメソッドではオブジェクトで持っているインスタンス変数にアクセスすることができる
 
-クラスに定義するメソッドにはアクセス修飾子が3種類存在する
-
-Publicメソッド
-単純にクラス内に定義したメソッドはデフォルトでpublicメソッドになる
-Publicメソッドはオブジェクトから直にメソッドを呼び出すことができるメソッド
-
-Privateメソッド
-privateメソッドを定義するにはクラス内にprivateと書きその一行下にメソッドを定義する
-privateメソッドはオブジェクトからドット記法で直接呼び出すことはできない
-クラス外部には公開されないメソッドでクラス内のメソッドから呼び出して使われるもの
-selfを使用してメソッドを呼び出すことはできず、メソッド名単体で書いて呼び出さなければならない。selfをつけないメソッドの呼び出し方を関数形式という
 
 protectedメソッド
 protectedメソッドもドット記法で外部から呼び出すことができないメソッド
